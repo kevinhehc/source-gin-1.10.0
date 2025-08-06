@@ -4,6 +4,7 @@
 
 package gin
 
+// 核心结构体 Engine，整个服务的入口
 import (
 	"fmt"
 	"html/template"
@@ -386,6 +387,7 @@ func iterate(path, method string, routes RoutesInfo, root *node) RoutesInfo {
 // Run attaches the router to a http.Server and starts listening and serving HTTP requests.
 // It is a shortcut for http.ListenAndServe(addr, router)
 // Note: this method will block the calling goroutine indefinitely unless an error happens.
+// 启动入口
 func (engine *Engine) Run(addr ...string) (err error) {
 	defer func() { debugPrintError(err) }()
 
@@ -580,6 +582,7 @@ func (engine *Engine) RunListener(listener net.Listener) (err error) {
 }
 
 // ServeHTTP conforms to the http.Handler interface.
+// net.http包的方法
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	c := engine.pool.Get().(*Context)
 	c.writermem.reset(w)
@@ -627,6 +630,7 @@ func (engine *Engine) handleHTTPRequest(c *Context) {
 		if value.params != nil {
 			c.Params = *value.params
 		}
+		// 真正执行的地方
 		if value.handlers != nil {
 			c.handlers = value.handlers
 			c.fullPath = value.fullPath

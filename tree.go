@@ -4,6 +4,7 @@
 
 package gin
 
+// 方法树，底层是压缩前缀树
 import (
 	"bytes"
 	"net/url"

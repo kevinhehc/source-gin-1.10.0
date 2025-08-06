@@ -4,6 +4,7 @@
 
 package gin
 
+// 请求上下文
 import (
 	"errors"
 	"io"
@@ -179,6 +180,7 @@ func (c *Context) FullPath() string {
 // Next should be used only inside middleware.
 // It executes the pending handlers in the chain inside the calling handler.
 // See example in GitHub.
+// 如何中断：通过 index = abortIndex,那就会导致for循环没法继续拿到handler
 func (c *Context) Next() {
 	c.index++
 	for c.index < int8(len(c.handlers)) {
@@ -257,6 +259,7 @@ func (c *Context) Error(err error) *Error {
 
 // Set is used to store a new key/value pair exclusively for this context.
 // It also lazy initializes  c.Keys if it was not used previously.
+// 内部包装了个map，存储传递的数据
 func (c *Context) Set(key string, value any) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
